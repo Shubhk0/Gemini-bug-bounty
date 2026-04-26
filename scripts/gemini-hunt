@@ -1,0 +1,7 @@
+#!/bin/bash
+# Wrapper to start a full bug bounty hunting session
+
+mkdir -p .hunt-memory
+cp "${HOME}/.gemini-bug-bounty/templates/bb-methodology-GEMINI.md" ./GEMINI.md
+echo "Bug hunting template copied to $(pwd)/GEMINI.md"
+gemini
