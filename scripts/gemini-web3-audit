@@ -1,7 +1,0 @@
-#!/bin/bash
-# Wrapper to start a web3 audit session
-
-mkdir -p .hunt-memory
-cp "${HOME}/.gemini-bug-bounty/templates/web3-audit-GEMINI.md" ./GEMINI.md
-echo "Web3 audit template copied to $(pwd)/GEMINI.md"
-gemini

@@ -1,7 +1,0 @@
-#!/bin/bash
-# Wrapper to start a recon session
-
-mkdir -p .hunt-memory
-cp "${HOME}/.gemini-bug-bounty/templates/web2-recon-GEMINI.md" ./GEMINI.md
-echo "Recon template copied to $(pwd)/GEMINI.md"
-gemini

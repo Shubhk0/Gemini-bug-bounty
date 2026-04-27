@@ -1,15 +1,16 @@
-# Gemini Bug Bounty
+# Gemini Bug Bounty Swarm
 
-An autonomous bug bounty hunting, smart contract auditing, and attack surface discovery tool powered by the official **Google Gemini CLI** (`@google/gemini-cli`).
+An autonomous bug bounty hunting, smart contract auditing, and attack surface discovery swarm powered by the official **Google Gemini CLI** (`@google/gemini-cli`) using native **Agent Skills**.
 
-Inspired by `claude-bug-bounty`, this project brings the same modular skill-based architecture to Gemini, leveraging its massive **1M-2M token context window** and native shell integration.
+Inspired by `claude-bug-bounty`, this project brings the same modular architecture to Gemini, leveraging its massive **1M-2M token context window**, native shell integration, and **Multi-Agent Skill Swarm** capabilities.
 
 ## Features
 
-*   **Context-Aware Templates (`GEMINI.md`)**: Drop a specific template into your working directory to instantly turn Gemini into a specialized agent (Recon, Auditing, Report Writing).
+*   **Native Agent Skills**: Fully utilizes the new `gemini skills` architecture. No clunky bash wrappers needed.
+*   **Swarm Orchestrator**: The `bb-methodology` skill acts as the Commander, automatically delegating specific phases (recon, auth testing, auditing) to the correct sub-agent.
+*   **Beautiful UI Dashboard**: Includes a `hunt-dashboard.sh` script to parse memory logs into a beautiful terminal view.
 *   **Native Shell Execution**: Gemini CLI interacts directly with installed security tools (`subfinder`, `nuclei`, `httpx`) without needing Python middleware.
-*   **Persistent Memory**: Uses Gemini's massive context window and local filesystem tools to maintain session logs, so it remembers what it tested yesterday.
-*   **Web2 & Web3 Skills**: Includes methodologies for web vulnerabilities (IDOR, SSRF, SQLi) and smart contract flaws (Reentrancy, Access Control).
+*   **Persistent Memory**: Uses local filesystem tools to maintain session logs (`.hunt-memory/`), so it remembers what it tested yesterday.
 
 ## Installation
 
@@ -27,7 +28,7 @@ chmod +x install_tools.sh
 ./install_tools.sh
 ```
 
-### 3. Install Gemini Bug Bounty Scripts
+### 3. Link Agent Skills
 ```bash
 chmod +x install.sh
 ./install.sh
@@ -35,28 +36,25 @@ chmod +x install.sh
 
 ## Usage
 
-Create a directory for your target and run one of the specialized aliases:
+Create a directory for your target and simply start Gemini:
 
 ```bash
 mkdir my-target && cd my-target
-
-# Start a recon session
-gemini-recon target.com
-
-# Start a full bug hunting session
-gemini-hunt target.com
-
-# Start a Web3 smart contract audit
-gemini-web3-audit
+gemini
 ```
 
-This will automatically copy the appropriate `GEMINI.md` context file into your folder and start the Gemini interactive session.
+Inside the interactive prompt, you can activate the Swarm Commander:
+> "Activate the bb-methodology skill and let's start hunting on target.com"
 
-Inside the interactive prompt, you can tell Gemini:
-> "Start scanning target.com using subfinder and analyze the results"
-> "Audit the MyToken.sol file in this directory"
-> "Write a HackerOne report for the SSRF we just found"
+The Swarm Commander will automatically instruct the CLI to activate the `web2-recon` skill, the `auth-testing` skill, or the `web3-audit` skill based on what is needed.
 
-## Architecture
+### Dashboard UI
+To get a beautiful bird's-eye view of your current hunt:
+```bash
+~/.local/bin/hunt-dashboard
+```
 
-This tool relies on **Context Templates** (`templates/*-GEMINI.md`). By placing a highly structured `GEMINI.md` file in the current directory, the Gemini CLI automatically reads it, adopting the specific persona, methodology, and strict operating rules defined within. Memory is persisted by instructing the AI to read/write to local markdown files in a `.hunt-memory` directory.
+## Advanced Browsing
+If `curl` is insufficient for parsing complex API responses, the Swarm utilizes the built-in helper script:
+`~/.local/bin/browser-helper <url> -H "Cookie: session=xyz"`
+This script automatically formats JSON, truncates massive HTML responses to save context, and handles SSL verification errors smoothly.
