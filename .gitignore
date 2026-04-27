@@ -1,0 +1,4 @@
+.DS_Store
+.hunt-memory/
+node_modules/
+*.log
