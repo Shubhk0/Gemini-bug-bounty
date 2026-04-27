@@ -1,6 +1,6 @@
 <div align="center">
-  <h1>Gemini Bug Bounty Swarm</h1>
-  <p><b>An autonomous bug bounty hunting, smart contract auditing, and attack surface discovery tool powered by the official Google Gemini CLI.</b></p>
+  <h1>Gemini Bug Bounty Swarm 🐝</h1>
+  <p><b>An autonomous bug bounty hunting, smart contract auditing, and attack surface discovery swarm powered by the official Google Gemini CLI.</b></p>
 </div>
 
 <br>
@@ -13,11 +13,49 @@ Inspired by `claude-bug-bounty`, this project brings the same modular architectu
 
 <br>
 
-## Architecture & Swarm Logic
+## 🏗️ Architecture & Swarm Logic
 
-Unlike basic CLI wrappers, this tool uses Gemini's native `Agent Skills` feature. The **Swarm Commander** orchestrates the hunt, delegating specific tasks to specialized sub-agents.
+Unlike basic CLI wrappers, this tool uses Gemini's native `Agent Skills` feature. The **Swarm Commander** orchestrates the hunt, delegating specific tasks to specialized sub-agents. All agents write to a shared persistent memory (`.hunt-memory/`), allowing the swarm to pick up where it left off across days or weeks of hunting.
 
-All agents write to a shared persistent memory (`.hunt-memory/`), allowing the swarm to pick up where it left off across days or weeks of hunting.
+### System Overview
+
+```text
+                               ┌─────────────────────────┐
+                               │  🧑‍💻 Human Bug Hunter   │
+                               └────────────┬────────────┘
+                                            │ (Prompts via CLI)
+                                            ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│ 🧠 GEMINI CLI (Swarm Engine)                                                    │
+│                                                                                 │
+│                    ┌───────────────────────────────────────┐                    │
+│                    │ 👑 bb-methodology (Swarm Commander)   │                    │
+│                    │ Orchestrates the 5-phase methodology  │                    │
+│                    └─┬─────────────┬─────────────┬─────────┘                    │
+│       Delegates Task │             │             │ Delegates Task               │
+│                      ▼             ▼             ▼                              │
+│ ┌──────────────────────┐ ┌───────────────────────┐ ┌──────────────────────────┐ │
+│ │ 🌍 web2-recon        │ │ 🔐 auth-testing       │ │ 📝 report-writer         │ │
+│ │ (Subfinder, Nuclei)  │ │ (IDORs, Logic Flaws)  │ │ (HackerOne Markdown)     │ │
+│ └──────────────────────┘ └───────────────────────┘ └──────────────────────────┘ │
+└───────────────────────────────┬────────────────────────────┬────────────────────┘
+                                │ Saves Findings             │ Saves Bug Reports
+                                ▼                            ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│ 💾 LOCAL PERSISTENT MEMORY (.hunt-memory/ directory)                            │
+│ ├─ recon_surface.md     (Hosts & Ports)                                         │
+│ ├─ auth_session_log.md  (Tested endpoints & parameters)                         │
+│ └─ reports/             (Final generated bug reports)                           │
+└───────────────────────────────────────────┬─────────────────────────────────────┘
+                                            │ Reads Data
+                                            ▼
+                               ┌─────────────────────────┐
+                               │ 📊 hunt-dashboard       │
+                               │ (Beautiful Terminal UI) │
+                               └─────────────────────────┘
+```
+
+### Flow Diagram
 
 ```mermaid
 graph TD
@@ -43,7 +81,7 @@ graph TD
 
 <br>
 
-## The Swarm Agents
+## 🤖 The Swarm Agents
 
 | Agent | What It Does |
 |:---|:---|
@@ -59,7 +97,7 @@ graph TD
 
 <br>
 
-## What It Can Find
+## 🎯 What It Can Find
 
 <details>
 <summary><b>Web2 Vulnerabilities</b> — click to expand</summary>
@@ -96,7 +134,7 @@ graph TD
 
 <br>
 
-## Installation
+## 🛠️ Installation
 
 ### 1. Install Gemini CLI
 You need Node.js installed on your system.
@@ -128,7 +166,7 @@ chmod +x install.sh
 
 <br>
 
-## Usage
+## 🚀 Usage
 
 ### 1. Start a Hunt
 Create a directory for your target and simply start Gemini:
@@ -161,10 +199,10 @@ If the JSON response is massive, the swarm automatically utilizes the `browser-h
 
 <br>
 
-## Memory Management
+## 🧠 Memory Management
 
 Gemini Bug Bounty relies on **Persistent File Memory**.
-Whenever an agent finds a subdomain, an open port, or a vulnerability, it appends it to markdown files in the `.hunt-memory/` directory.
+Whenever an agent finds a subdomain, an open port, or a vulnerability, it appends it to structured markdown tables in the `.hunt-memory/` directory.
 
 If you close your laptop and resume the hunt tomorrow, simply type:
 > "Read the .hunt-memory logs and tell me where we left off."

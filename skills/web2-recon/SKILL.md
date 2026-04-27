@@ -24,3 +24,7 @@ Your sole purpose is to map out the entire attack surface of a given target usin
 ## Memory Persistence
 - Save your final attack surface summary to `.hunt-memory/recon_surface.md` using bash (`echo ... > ...`).
 - If `.hunt-memory/recon_surface.md` already exists, read it first so you don't duplicate work.
+
+## Dashboard Integration
+Ensure the data written to `.hunt-memory/recon_surface.md` is strictly formatted as a Markdown table so the Swarm Commander and `hunt-dashboard` can easily parse it.
+Format: `| Host | Port | Title / Status | Tech Stack |`

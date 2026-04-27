@@ -33,3 +33,11 @@ You have access to the local shell. You MUST use the shell to execute security t
 You must maintain state between sessions.
 At the end of your analysis, use shell tools to append a summary of what you tested and what you found to `.hunt-memory/session_log.md`.
 At the start of your session, use `cat .hunt-memory/session_log.md` (if it exists) to understand what has already been done.
+
+## Dashboard & Output Formatting Requirements
+To ensure the `hunt-dashboard` can parse your data perfectly, enforce these formatting rules across the swarm:
+- When any agent saves to `.hunt-memory/`, they MUST use structured Markdown Tables.
+- Example:
+  `| Asset | Status | Finding | Severity |`
+  `|-------|--------|---------|----------|`
+  `| api.x | 200 OK | IDOR    | 🔴 High |`

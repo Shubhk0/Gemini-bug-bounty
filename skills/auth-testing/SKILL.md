@@ -24,3 +24,7 @@ You have access to the local shell. You MUST use the shell to interact with the 
 
 ## Memory and Context
 Append a summary of tested endpoints, parameter manipulations, and discovered IDORs to `.hunt-memory/auth_session_log.md`.
+
+## Dashboard Integration
+Ensure the data written to `.hunt-memory/auth_session_log.md` is strictly formatted as a Markdown table.
+Format: `| Endpoint | Method | Parameter Tested | Result | Vulnerable? |`
